@@ -1,12 +1,9 @@
 # src/agent/graph.py
-
+from src.agent.memory.memory import HybridMemoryManager
 from langgraph.checkpoint.sqlite import SqliteSaver
 from langgraph.graph import StateGraph
 from langgraph.prebuilt import ToolNode
 from langchain_openai import ChatOpenAI
-
-# Import HybridMemoryManager instead of load_user_calibration
-from src.agent.memory import HybridMemoryManager
 from pathlib import Path
 
 class AgentState(dict):
