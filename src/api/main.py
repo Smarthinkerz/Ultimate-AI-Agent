@@ -6,10 +6,12 @@ self-improvement approval, memory ingestion, and evaluation harness triggering.
 
 from fastapi import FastAPI, HTTPException, BackgroundTasks, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import HTMLResponse
 from pydantic import BaseModel
 from typing import Optional, Literal, List, Dict, Any
 import uuid
 from datetime import datetime
+import os
 
 from src.agent.graph import run_ultimate_agent, create_ultimate_agent_graph
 from src.agent.memory import HybridMemoryManager
@@ -32,6 +34,11 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Load dashboard HTML
+DASHBOARD_PATH = os.path.join(os.path.dirname(__file__), "dashboard.html")
+with open(DASHBOARD_PATH, "r") as f:
+    DASHBOARD_HTML = f.read()
 
 # -------------------------------
 # Models
@@ -62,10 +69,10 @@ class ApprovalRequest(BaseModel):
 # Endpoints
 # -------------------------------
 
-@app.get("/")
+@app.get("/", response_class=HTMLResponse)
 async def root():
-    """Simple root endpoint for quick testing."""
-    return {"status": "ok", "message": "Ultimate AI Agent System API is running"}
+    """Serve the interactive dashboard."""
+    return DASHBOARD_HTML
 
 @app.get("/health")
 async def health_check():
@@ -155,3 +162,4 @@ async def get_current_context():
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
+
