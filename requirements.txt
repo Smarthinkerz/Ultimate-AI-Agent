@@ -2,7 +2,7 @@
 # Core Orchestration & LLM
 
 langgraph>=1.2.7,<1.3.0
-langgraph-prebuilt==1.1.0  # latest available on PyPI
+langgraph-prebuilt>=1.2.0  # latest available on PyPI
 langgraph-checkpoint>=4.1.1
 langgraph-sdk>=0.4.2
 langchain-core>=1.4.8,<2.0.0
