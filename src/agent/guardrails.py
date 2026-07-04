@@ -5,7 +5,7 @@ PII handling, cost/latency monitoring with auto-throttling, ethical/Sharia conte
 """
 
 from typing import Dict, Any, List
-from src.config.settings import settings
+from config.settings import settings
 from src.observability.logging import get_structured_logger
 
 logger = get_structured_logger(__name__)

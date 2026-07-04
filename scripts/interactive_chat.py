@@ -5,7 +5,7 @@ Shows full protocol execution, trace, and self-improvement proposals.
 """
 
 from src.agent.graph import run_ultimate_agent
-from src.config.settings import settings
+from config.settings import settings
 import json
 
 
