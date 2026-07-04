@@ -3,11 +3,13 @@ Production-grade settings management using Pydantic Settings.
 Loads from .env, supports multiple LLM providers, memory paths, governance flags.
 """
 
+import json
+import os
+from pathlib import Path
+from typing import List, Optional, Literal
+
 from pydantic import Field, field_validator
 from pydantic_settings import BaseSettings
-from typing import List, Optional, Literal
-import json
-from pathlib import Path
 
 
 class Settings(BaseSettings):
@@ -126,6 +128,9 @@ class Settings(BaseSettings):
 
 # Global settings instance
 settings = Settings()
+
+print(f"DEBUG: OPENAI_API_KEY from os.environ: {os.environ.get('OPENAI_API_KEY')}")
+print(f"DEBUG: settings.openai_api_key: {settings.openai_api_key}")
 
 # Ensure data directories exist
 for p in [settings.vector_db_path, settings.episodic_log_path, settings.structured_db_path.parent]:
