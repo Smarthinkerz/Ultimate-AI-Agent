@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultimate AI Agent System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            animation: fadeIn 0.6s ease-in;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        header p {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: slideUp 0.6s ease-out;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        .card h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.4em;
+        }
+
+        .card p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        input[type="text"],
+        input[type="file"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 0.95em;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="text"]:focus,
+        input[type="file"]:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            width: 100%;
+        }
+
+        button:hover {
+            transform: scale(1.02);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        .button-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .button-group button {
+            width: 100%;
+        }
+
+        .output {
+            background: #f5f5f5;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 15px;
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #333;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .output.error {
+            border-left-color: #e74c3c;
+            background: #ffe6e6;
+            color: #c0392b;
+        }
+
+        .output.success {
+            border-left-color: #27ae60;
+            background: #e8f8f5;
+            color: #27ae60;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            color: #667eea;
+            margin-top: 15px;
+        }
+
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .status-badge {
+            display: inline-block;
+            background: #27ae60;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            margin-top: 10px;
+        }
+
+        .mode-selector {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .mode-btn {
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            color: #666;
+        }
+
+        .mode-btn.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .mode-btn:hover {
+            border-color: #667eea;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .stat-item {
+            background: #f9f9f9;
+            padding: 10px;
+            border-radius: 6px;
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 0.85em;
+            color: #999;
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        footer {
+            text-align: center;
+            color: white;
+            margin-top: 40px;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🚀 Ultimate AI Agent System</h1>
+            <p>Production-ready frontier reasoning engine calibrated for Smarthinkerz LLC</p>
+            <div class="status-badge">✓ System Online</div>
+        </header>
+
+        <div class="grid">
+            <!-- Agent Chat Card -->
+            <div class="card">
+                <h2>💬 Interactive Chat</h2>
+                <p>Engage with the reasoning engine in real-time. Choose your interaction mode and ask complex questions.</p>
+                
+                <div class="input-group">
+                    <label>Interaction Mode</label>
+                    <div class="mode-selector">
+                        <button class="mode-btn active" data-mode="chat">Chat</button>
+                        <button class="mode-btn" data-mode="batch">Batch</button>
+                        <button class="mode-btn" data-mode="mentor">Mentor</button>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Your Question</label>
+                    <textarea id="agentTask" placeholder="Ask anything... The agent will reason through it deeply."></textarea>
+                </div>
+
+                <button onclick="runAgent()">Run Agent</button>
+                
+                <div class="loading" id="agentLoading">
+                    <div class="spinner"></div>
+                    <p>Agent is reasoning...</p>
+                </div>
+
+                <div class="output" id="agentOutput" style="display:none;"></div>
+            </div>
+
+            <!-- Health Check Card -->
+            <div class="card">
+                <h2>🏥 System Health</h2>
+                <p>Monitor the system's operational status, version, and calibration state.</p>
+
+                <button onclick="checkHealth()">Check Health Status</button>
+
+                <div class="loading" id="healthLoading">
+                    <div class="spinner"></div>
+                    <p>Checking system health...</p>
+                </div>
+
+                <div class="output" id="healthOutput" style="display:none;"></div>
+            </div>
+
+            <!-- Memory Context Card -->
+            <div class="card">
+                <h2>🧠 Memory Context</h2>
+                <p>View the current calibration state and memory context of the system.</p>
+
+                <button onclick="getMemoryContext()">Load Memory Context</button>
+
+                <div class="loading" id="memoryLoading">
+                    <div class="spinner"></div>
+                    <p>Loading memory context...</p>
+                </div>
+
+                <div class="output" id="memoryOutput" style="display:none;"></div>
+            </div>
+
+            <!-- Memory Ingestion Card -->
+            <div class="card">
+                <h2>📥 Memory Ingestion</h2>
+                <p>Upload documents (PDFs, JSON, text) to bulk ingest into the system's memory.</p>
+
+                <div class="input-group">
+                    <label>Source Type</label>
+                    <select id="sourceType">
+                        <option value="conversation_history">Conversation History</option>
+                        <option value="principles">Principles</option>
+                        <option value="knowledge_base">Knowledge Base</option>
+                        <option value="feedback">Feedback</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>Upload File</label>
+                    <input type="file" id="memoryFile" accept=".pdf,.json,.txt">
+                </div>
+
+                <button onclick="ingestMemory()">Ingest Memory</button>
+
+                <div class="loading" id="ingestLoading">
+                    <div class="spinner"></div>
+                    <p>Ingesting memory...</p>
+                </div>
+
+                <div class="output" id="ingestOutput" style="display:none;"></div>
+            </div>
+
+            <!-- Evaluation Card -->
+            <div class="card">
+                <h2>📊 Run Evaluation</h2>
+                <p>Trigger the evaluation harness to benchmark the system on real-domain tasks.</p>
+
+                <div class="input-group">
+                    <label>Benchmark (Optional)</label>
+                    <input type="text" id="benchmark" placeholder="Leave empty for all benchmarks">
+                </div>
+
+                <button onclick="runEvaluation()">Start Evaluation</button>
+
+                <div class="loading" id="evalLoading">
+                    <div class="spinner"></div>
+                    <p>Running evaluation...</p>
+                </div>
+
+                <div class="output" id="evalOutput" style="display:none;"></div>
+            </div>
+
+            <!-- API Documentation Card -->
+            <div class="card">
+                <h2>📚 API Documentation</h2>
+                <p>Complete reference for all available endpoints and their usage.</p>
+
+                <div style="margin-top: 15px;">
+                    <strong style="color: #667eea;">Available Endpoints:</strong>
+                    <ul style="margin-top: 10px; margin-left: 20px; color: #666; line-height: 1.8;">
+                        <li><code>GET /health</code> - System health check</li>
+                        <li><code>POST /agent/run</code> - Run reasoning engine</li>
+                        <li><code>GET /memory/context</code> - Get memory state</li>
+                        <li><code>POST /memory/ingest</code> - Bulk memory upload</li>
+                        <li><code>POST /evaluate/run</code> - Run benchmarks</li>
+                        <li><code>POST /self-improvement/approve</code> - Approve improvements</li>
+                    </ul>
+                </div>
+
+                <button onclick="viewDocs()" style="margin-top: 15px;">View Full Docs</button>
+            </div>
+        </div>
+
+        <footer>
+            <p>Ultimate AI Agent System v1.0.0 | Powered by FastAPI + LangGraph</p>
+        </footer>
+    </div>
+
+    <script>
+        let selectedMode = 'chat';
+
+        // Mode selector
+        document.querySelectorAll('.mode-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                selectedMode = this.dataset.mode;
+            });
+        });
+
+        async function runAgent() {
+            const task = document.getElementById('agentTask').value.trim();
+            if (!task) {
+                alert('Please enter a task');
+                return;
+            }
+
+            const output = document.getElementById('agentOutput');
+            const loading = document.getElementById('agentLoading');
+            
+            loading.style.display = 'block';
+            output.style.display = 'none';
+
+            try {
+                const response = await fetch('/agent/run', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ task, mode: selectedMode })
+                });
+
+                const data = await response.json();
+                
+                if (response.ok) {
+                    output.className = 'output success';
+                    output.textContent = JSON.stringify(data, null, 2);
+                } else {
+                    output.className = 'output error';
+                    output.textContent = `Error: ${data.detail || 'Unknown error'}`;
+                }
+            } catch (error) {
+                output.className = 'output error';
+                output.textContent = `Error: ${error.message}`;
+            } finally {
+                loading.style.display = 'none';
+                output.style.display = 'block';
+            }
+        }
+
+        async function checkHealth() {
+            const output = document.getElementById('healthOutput');
+            const loading = document.getElementById('healthLoading');
+            
+            loading.style.display = 'block';
+            output.style.display = 'none';
+
+            try {
+                const response = await fetch('/health');
+                const data = await response.json();
+                
+                output.className = 'output success';
+                output.textContent = JSON.stringify(data, null, 2);
+            } catch (error) {
+                output.className = 'output error';
+                output.textContent = `Error: ${error.message}`;
+            } finally {
+                loading.style.display = 'none';
+                output.style.display = 'block';
+            }
+        }
+
+        async function getMemoryContext() {
+            const output = document.getElementById('memoryOutput');
+            const loading = document.getElementById('memoryLoading');
+            
+            loading.style.display = 'block';
+            output.style.display = 'none';
+
+            try {
+                const response = await fetch('/memory/context');
+                const data = await response.json();
+                
+                output.className = 'output success';
+                output.textContent = JSON.stringify(data, null, 2);
+            } catch (error) {
+                output.className = 'output error';
+                output.textContent = `Error: ${error.message}`;
+            } finally {
+                loading.style.display = 'none';
+                output.style.display = 'block';
+            }
+        }
+
+        async function ingestMemory() {
+            const file = document.getElementById('memoryFile').files[0];
+            const sourceType = document.getElementById('sourceType').value;
+            
+            if (!file) {
+                alert('Please select a file');
+                return;
+            }
+
+            const output = document.getElementById('ingestOutput');
+            const loading = document.getElementById('ingestLoading');
+            
+            loading.style.display = 'block';
+            output.style.display = 'none';
+
+            try {
+                const formData = new FormData();
+                formData.append('file', file);
+                formData.append('source_type', sourceType);
+
+                const response = await fetch('/memory/ingest', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+                
+                output.className = 'output success';
+                output.textContent = JSON.stringify(data, null, 2);
+            } catch (error) {
+                output.className = 'output error';
+                output.textContent = `Error: ${error.message}`;
+            } finally {
+                loading.style.display = 'none';
+                output.style.display = 'block';
+            }
+        }
+
+        async function runEvaluation() {
+            const benchmark = document.getElementById('benchmark').value.trim() || null;
+            const output = document.getElementById('evalOutput');
+            const loading = document.getElementById('evalLoading');
+            
+            loading.style.display = 'block';
+            output.style.display = 'none';
+
+            try {
+                const url = benchmark ? `/evaluate/run?benchmark=${encodeURIComponent(benchmark)}` : '/evaluate/run';
+                const response = await fetch(url, { method: 'POST' });
+                const data = await response.json();
+                
+                output.className = 'output success';
+                output.textContent = JSON.stringify(data, null, 2);
+            } catch (error) {
+                output.className = 'output error';
+                output.textContent = `Error: ${error.message}`;
+            } finally {
+                loading.style.display = 'none';
+                output.style.display = 'block';
+            }
+        }
+
+        function viewDocs() {
+            alert('API Documentation:\n\nGET /health - System health check\nPOST /agent/run - Run reasoning engine\nGET /memory/context - Get memory state\nPOST /memory/ingest - Bulk memory upload\nPOST /evaluate/run - Run benchmarks\nPOST /self-improvement/approve - Approve improvements');
+        }
+    </script>
+</body>
+</html>
+
