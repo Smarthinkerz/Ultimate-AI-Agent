@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  ultimate-agent:
+    build: .
+    container_name: ultimate-ai-agent
+    ports:
+      - "8000:8000"
+    environment:
+      - ENVIRONMENT=production
+      - LLM_PROVIDER=${LLM_PROVIDER:-openai}
+      - LLM_MODEL=${LLM_MODEL:-gpt-4o}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - VECTOR_DB_PATH=/app/data/chroma
+      - STRUCTURED_DB_PATH=/app/data/agent_memory.sqlite
+      - EPISODIC_LOG_PATH=/app/data/episodic_logs
+      - CHECKPOINT_DB_PATH=/app/data/checkpoints.sqlite
+    volumes:
+      - ./data:/app/data
+      - ./config:/app/config:ro
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  # Optional: Postgres for production checkpointer + structured memory at scale
+  # postgres:
+  #   image: postgres:16-alpine
+  #   environment:
+  #     POSTGRES_USER: agent
+  #     POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-change_me}
+  #     POSTGRES_DB: ultimate_agent
+  #   volumes:
+  #     - pgdata:/var/lib/postgresql/data
+  #   ports:
+  #     - "5432:5432"
+
+volumes:
+  pgdata:

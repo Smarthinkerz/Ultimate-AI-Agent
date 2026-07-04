@@ -1,0 +1,82 @@
+{
+  "user_id": "tahir_senyurt",
+  "name": "Tahir ŞENYURT (Şenyurt)",
+  "born": "Turkey 1961",
+  "primary_role": "Managing Director of Cahit Trading & Contracting L.L.C.",
+  "experience": "25+ years leading five companies in road, marine, infrastructure, residential/commercial projects across Turkey and GCC.",
+  "ai_ventures": {
+    "smarthinkerz_llc": {
+      "location": "Oman-based (Muscat / Sultan Haitham City context)",
+      "focus": "AI ventures with global focus (Japan entry, GCC expansion)",
+      "entities": [
+        {
+          "name": "AI Builder Bootcamp (Smarthinkerz Academy / NovaForge)",
+          "description": "Dual-track program: Builder (technical AI engineering beginner-to-expert: Python/ML/DL/NLP/multimodal/RL/generative/XAI/edge/deployment/ethics) + Thinker (prompt mastery, strategic orchestration, agentic systems, ethics). Extensive original curriculum, badges, 3D mentors. Pricing: Foundations $99, Full $699. Positioned as world's leading AI mastery program.",
+          "status": "Core product, ongoing development"
+        },
+        {
+          "name": "Brainpower AI (Decision Intelligence / SmartThinkerz)",
+          "description": "Explainable AI for structured decisions, trading/financial workflows. Features: guided frameworks, templates, audit trails, Futures Engine, Decision Intelligence Graph, Collective Intelligence. Global iOS/Android/Web, hybrid sub+enterprise. Early prototype (internal testing). 5-year target: $15M+ ARR. Current raise focus: OMR 75k founding round (20% participation) or evolved $1M pre-seed narrative with Fortune 500 pilots, 10k+ users, 95% retention, 40% MoM growth metrics.",
+          "status": "Active investor materials development, prototype phase"
+        },
+        {
+          "name": "Smarthinkerz Studio",
+          "description": "AI media/content automation: documents to professional cinematic images/videos (16:9, no stock), 3D infographics, animations, film posters, storyboards. Futuristic neural 'S' brain logo concepts (gold/cyan). Website with use cases, pricing, blog.",
+          "status": "Active asset production & branding"
+        },
+        {
+          "name": "ScopeForge-style AI Business OS",
+          "description": "AI-Powered Business OS for service providers: React/Tailwind dashboard, AI intake (docs/screenshots/PDFs/voice), multi-tone/lang proposal gen, VAT/multi-currency invoicing, CRM kanban pipeline, Scope Sentinel (creep detection + change orders), screenshot intelligence, revenue analytics. 108+ turn development history.",
+          "status": "Advanced prototype / production path"
+        },
+        {
+          "name": "AR Vision Studio / WebAR",
+          "description": "Production WebAR SaaS platform with older iPhone (iOS 12-14 / iPhone 6s-X) compatibility via MindAR tuning (filterMinCF, filterBeta, warmup, missTolerance). Frankincense stamp campaign (frankincenseworld.com) with reliable QR/print + video fallback. GitHub: Smarthinkerz/webarfrankincenseworld2, Vercel deploy.",
+          "status": "Production deployed, hardening for older devices"
+        },
+        {
+          "name": "Japan AI Market Strategies",
+          "description": "Deep research on gaps (aging 30%+, labor shortages), culture (omotenashi, kaizen, tradition, SME practices). 8+ tailored startup ideas: elderly care, SME tools, precision ag, hospitality. Cultural adaptation focus.",
+          "status": "Strategy synthesis active"
+        },
+        {
+          "name": "Sustainability / Circular Economy",
+          "description": "'ثمرة متجددة' (regenerative fruit) — agricultural waste-to-value (compost, biogas, feed) for tomatoes, cucumbers, onions, mangoes, bananas (28-45% loss), animal waste (camels, cows, goats, sheep ~24.4k tons), fish waste. Omani farm context, 3D infographic video production, motivational tone, Arabic RTL variants.",
+          "status": "Deep content production phase (May 2026 focus)"
+        }
+      ]
+    }
+  },
+  "construction_business": {
+    "company": "Cahit Trading & Contracting L.L.C.",
+    "focus": "Road, marine, infrastructure, residential/commercial projects. Professional bio and website (cahitcontracting.com) development for marine/coastal/infra branding.",
+    "dual_track": "Executive leadership + AI entrepreneurship integration (intelligent environments, XR collab, sustainability in construction)"
+  },
+  "core_principles": [
+    "Ethical AI with explainability, human-AI collaboration, and prevention of dependency that diminishes human capability.",
+    "Islamic principles (Sharia) contextual application in Oman/GCC: spousal property gifts (hibah) vs inheritance, family agreements for asset transfer (notarized), ethical structures. Explicitly not legal advice — flag for qualified review.",
+    "Compounding advantage and antifragility in all venture design (Taleb lens).",
+    "Human-AI symbiosis: Amplify judgment, relationships, creativity, values; offload drudgery.",
+    "Truth-seeking over sycophancy; rigorous multi-framework analysis on every significant output.",
+    "Cultural sensitivity: Omani (Sultan Haitham Vision 2040, frankincense heritage), Japanese business norms, Turkish construction heritage.",
+    "Long-term capability development for the human user — the agent exists to make Tahir more effective, not replace his strategic judgment."
+  ],
+  "active_projects_2026": [
+    "Brainpower AI investor materials evolution (memo → pitch email mass-mail → PPT with projections)",
+    "AI Builder Bootcamp curriculum expansion and NovaForge positioning",
+    "Smarthinkerz ecosystem branding (neural 'S' logo, partner visuals, site review)",
+    "AR Vision Studio production hardening + frankincense campaign deploy",
+    "Sustainability video/infographic production for circular ag economy",
+    "Japan AI startup idea portfolio development",
+    "ScopeForge AI Business OS continued iteration",
+    "Construction company website & executive bio professionalization"
+  ],
+  "goals_aspirations": [
+    "Scale AI education (bootcamp) and platforms (Brainpower, Studio, ScopeForge) globally with Japan/GCC focus.",
+    "Raise capital for Brainpower AI (OMR 75k or evolved $1M pre-seed) to reach $15M+ ARR in 5 years, founder-led.",
+    "Build AI apps for architecture/intelligent environments, XR collaboration, workplace wellbeing, sustainability, ethical human-AI systems.",
+    "Integrate AI deeply into construction operations for competitive advantage (risk, scheduling, optionality, intelligent sites)."
+  ],
+  "preferences_output_style": "Thorough, detailed responses exploring topics from multiple angles. Include relevant context, examples, nuances, implications. Structure clearly with appropriate depth, covering edge cases. Completeness with clarity and organization. 'World’s best author/researcher' role-play for long-form original content when requested.",
+  "memory_update_policy": "Automatically detect and persist durable facts from interactions. Reference memory in every synthesis. Bulk ingestion supported via scripts for conversation histories, PDFs, principles."
+}
