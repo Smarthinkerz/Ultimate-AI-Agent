@@ -32,10 +32,7 @@ class HybridMemoryManager:
 
         # Chroma client (persistent)
         self.chroma_client = chromadb.PersistentClient(path=str(self.vector_path))
-        self.embedding_fn = embedding_functions.OpenAIEmbeddingFunction(
-            api_key=settings.openai_api_key,
-            model_name=settings.embedding_model
-        ) if settings.embedding_provider == "openai" else embedding_functions.DefaultEmbeddingFunction()
+        self.embedding_fn = self._build_embedding_function()
 
         self.collection = self.chroma_client.get_or_create_collection(
             name=f"agent_memory_{settings.user_id}",
@@ -45,6 +42,31 @@ class HybridMemoryManager:
 
         # SQLite structured store
         self._init_structured_db()
+
+    def _build_embedding_function(self):
+        """
+        Build the Chroma embedding function, explicitly passing the OpenAI API key
+        so Chroma does not fall back to looking up CHROMA_OPENAI_API_KEY.
+        """
+        if settings.embedding_provider == "openai":
+            api_key = settings.openai_api_key
+            if not api_key:
+                raise ValueError(
+                    "OPENAI_API_KEY is not set. "
+                    "Please configure the OPENAI_API_KEY environment variable so "
+                    "the Chroma OpenAI embedding function can authenticate."
+                )
+            logger.info(
+                "embedding_function_initialized",
+                provider="openai",
+                model=settings.embedding_model,
+            )
+            return embedding_functions.OpenAIEmbeddingFunction(
+                api_key=api_key,
+                model_name=settings.embedding_model,
+            )
+        logger.info("embedding_function_initialized", provider="default")
+        return embedding_functions.DefaultEmbeddingFunction()
 
     def _init_structured_db(self):
         conn = sqlite3.connect(self.structured_path)
