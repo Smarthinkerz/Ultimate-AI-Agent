@@ -6,7 +6,7 @@ full audit logging, human approval gates for high-impact tools, graceful degrada
 
 from typing import Dict, Any, List, Optional
 from datetime import datetime
-from src.config.settings import settings
+from config.settings import settings
 from src.observability.logging import get_structured_logger
 
 logger = get_structured_logger(__name__)

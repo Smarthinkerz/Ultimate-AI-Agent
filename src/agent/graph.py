@@ -25,7 +25,7 @@ from src.agent.reasoning_engine import (
 from src.agent.memory import HybridMemoryManager
 from src.agent.tools.registry import ToolRegistry
 from src.agent.guardrails import GuardrailEngine
-from src.config.settings import settings
+from config.settings import settings
 from src.observability.logging import get_structured_logger
 
 logger = get_structured_logger(__name__)
