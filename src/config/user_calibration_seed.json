@@ -1,0 +1,12 @@
+{
+  "user_id": "tahir_senyurt",
+  "preferences": {
+    "font": "Lato",
+    "theme": "dark",
+    "colors": ["#BD081D", "#FFFFFF"]
+  },
+  "agent_settings": {
+    "risk_tolerance": "medium",
+    "scenario_depth": 3
+  }
+}
