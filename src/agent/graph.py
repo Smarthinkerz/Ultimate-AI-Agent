@@ -31,6 +31,307 @@ from src.observability.logging import get_structured_logger
 logger = get_structured_logger(__name__)
 
 
+# === NODE IMPLEMENTATIONS ===
+
+def load_user_calibration(state: AgentState) -> Dict[str, Any]:
+    """Load user context and calibration from memory."""
+    memory = HybridMemoryManager()
+    user_context = memory.get_user_context(settings.user_id, {})
+    
+    return {
+        "user_context": user_context,
+        "current_phase": Phase.DECONSTRUCTION,
+        "reasoning_trace": [{"phase": "calibration_loaded", "timestamp": datetime.utcnow().isoformat()}],
+        "last_updated": datetime.utcnow()
+    }
+
+
+def deconstruction_node(state: AgentState) -> Dict[str, Any]:
+    """Deconstruct task to first principles."""
+    task = state.get("task", "")
+    reasoning_trace = state.get("reasoning_trace", [])
+    
+    try:
+        deconstruction = deconstruct_to_first_principles(task)
+        reasoning_trace.append({
+            "phase": "deconstruction",
+            "result": deconstruction,
+            "timestamp": datetime.utcnow().isoformat()
+        })
+        return {
+            "current_phase": Phase.SYNTHESIS,
+            "reasoning_trace": reasoning_trace,
+            "last_updated": datetime.utcnow()
+        }
+    except Exception as e:
+        logger.error("deconstruction_failed", error=str(e))
+        return {
+            "error_state": str(e),
+            "current_phase": Phase.ERROR,
+            "last_updated": datetime.utcnow()
+        }
+
+
+def synthesis_node(state: AgentState) -> Dict[str, Any]:
+    """Synthesize multiple frameworks."""
+    task = state.get("task", "")
+    reasoning_trace = state.get("reasoning_trace", [])
+    
+    try:
+        synthesis = multi_framework_synthesis(task)
+        reasoning_trace.append({
+            "phase": "synthesis",
+            "result": synthesis,
+            "timestamp": datetime.utcnow().isoformat()
+        })
+        return {
+            "current_phase": Phase.REFINEMENT,
+            "reasoning_trace": reasoning_trace,
+            "last_updated": datetime.utcnow()
+        }
+    except Exception as e:
+        logger.error("synthesis_failed", error=str(e))
+        return {
+            "error_state": str(e),
+            "current_phase": Phase.ERROR,
+            "last_updated": datetime.utcnow()
+        }
+
+
+def refinement_pass_1_initial(state: AgentState) -> Dict[str, Any]:
+    """First refinement pass: initial critique."""
+    reasoning_trace = state.get("reasoning_trace", [])
+    reasoning_trace.append({
+        "phase": "refinement_pass_1",
+        "action": "initial_critique",
+        "timestamp": datetime.utcnow().isoformat()
+    })
+    return {
+        "refinement_pass": 1,
+        "reasoning_trace": reasoning_trace,
+        "last_updated": datetime.utcnow()
+    }
+
+
+def refinement_pass_2_critique(state: AgentState) -> Dict[str, Any]:
+    """Second refinement pass: adversarial critique."""
+    reasoning_trace = state.get("reasoning_trace", [])
+    task = state.get("task", "")
+    
+    try:
+        critique = adversarial_critique(task)
+        reasoning_trace.append({
+            "phase": "refinement_pass_2",
+            "critique": critique,
+            "timestamp": datetime.utcnow().isoformat()
+        })
+        return {
+            "refinement_pass": 2,
+            "reasoning_trace": reasoning_trace,
+            "last_updated": datetime.utcnow()
+        }
+    except Exception as e:
+        logger.error("critique_failed", error=str(e))
+        return {
+            "refinement_pass": 2,
+            "reasoning_trace": reasoning_trace,
+            "last_updated": datetime.utcnow()
+        }
+
+
+def refinement_pass_3_refinement(state: AgentState) -> Dict[str, Any]:
+    """Third refinement pass: refinement."""
+    reasoning_trace = state.get("reasoning_trace", [])
+    reasoning_trace.append({
+        "phase": "refinement_pass_3",
+        "action": "refinement",
+        "timestamp": datetime.utcnow().isoformat()
+    })
+    return {
+        "refinement_pass": 3,
+        "reasoning_trace": reasoning_trace,
+        "last_updated": datetime.utcnow()
+    }
+
+
+def refinement_pass_4_power_audit(state: AgentState) -> Dict[str, Any]:
+    """Fourth refinement pass: power audit."""
+    reasoning_trace = state.get("reasoning_trace", [])
+    task = state.get("task", "")
+    
+    try:
+        audit = power_audit(task)
+        reasoning_trace.append({
+            "phase": "refinement_pass_4",
+            "audit": audit,
+            "timestamp": datetime.utcnow().isoformat()
+        })
+        return {
+            "refinement_pass": 4,
+            "power_audit_result": audit,
+            "reasoning_trace": reasoning_trace,
+            "last_updated": datetime.utcnow()
+        }
+    except Exception as e:
+        logger.error("power_audit_failed", error=str(e))
+        return {
+            "refinement_pass": 4,
+            "reasoning_trace": reasoning_trace,
+            "last_updated": datetime.utcnow()
+        }
+
+
+def should_continue_refinement(state: AgentState) -> str:
+    """Decide whether to continue refinement or exit."""
+    refinement_pass = state.get("refinement_pass", 1)
+    if refinement_pass < 4:
+        return "continue_refinement"
+    return "exit_refinement"
+
+
+def futures_node(state: AgentState) -> Dict[str, Any]:
+    """Apply futures and compounding lens."""
+    reasoning_trace = state.get("reasoning_trace", [])
+    task = state.get("task", "")
+    
+    try:
+        futures = futures_and_compounding_lens(task)
+        reasoning_trace.append({
+            "phase": "futures",
+            "result": futures,
+            "timestamp": datetime.utcnow().isoformat()
+        })
+        return {
+            "futures_horizons": futures,
+            "current_phase": Phase.FUTURES,
+            "reasoning_trace": reasoning_trace,
+            "last_updated": datetime.utcnow()
+        }
+    except Exception as e:
+        logger.error("futures_failed", error=str(e))
+        return {
+            "current_phase": Phase.FUTURES,
+            "reasoning_trace": reasoning_trace,
+            "last_updated": datetime.utcnow()
+        }
+
+
+def symbiosis_node(state: AgentState) -> Dict[str, Any]:
+    """Apply human-AI symbiosis optimization."""
+    reasoning_trace = state.get("reasoning_trace", [])
+    task = state.get("task", "")
+    
+    try:
+        symbiosis = human_ai_symbiosis_optimization(task)
+        reasoning_trace.append({
+            "phase": "symbiosis",
+            "result": symbiosis,
+            "timestamp": datetime.utcnow().isoformat()
+        })
+        return {
+            "symbiosis_optimization": symbiosis,
+            "current_phase": Phase.SYMBIOSIS,
+            "reasoning_trace": reasoning_trace,
+            "last_updated": datetime.utcnow()
+        }
+    except Exception as e:
+        logger.error("symbiosis_failed", error=str(e))
+        return {
+            "current_phase": Phase.SYMBIOSIS,
+            "reasoning_trace": reasoning_trace,
+            "last_updated": datetime.utcnow()
+        }
+
+
+def tool_orchestration_node(state: AgentState) -> Dict[str, Any]:
+    """Orchestrate tool calls."""
+    reasoning_trace = state.get("reasoning_trace", [])
+    tool_budget = state.get("tool_budget_remaining_usd", settings.max_tool_cost_usd)
+    
+    reasoning_trace.append({
+        "phase": "tool_orchestration",
+        "budget_remaining": tool_budget,
+        "timestamp": datetime.utcnow().isoformat()
+    })
+    
+    return {
+        "current_phase": Phase.TOOL_ORCHESTRATION,
+        "reasoning_trace": reasoning_trace,
+        "last_updated": datetime.utcnow()
+    }
+
+
+def guardrails_node(state: AgentState) -> Dict[str, Any]:
+    """Apply guardrails and safety checks."""
+    reasoning_trace = state.get("reasoning_trace", [])
+    guardrail_engine = GuardrailEngine()
+    
+    # Run guardrails check
+    violations = guardrail_engine.check(state)
+    
+    reasoning_trace.append({
+        "phase": "guardrails",
+        "violations": len(violations),
+        "timestamp": datetime.utcnow().isoformat()
+    })
+    
+    return {
+        "guardrail_violations": violations,
+        "current_phase": Phase.GUARDRAILS,
+        "human_approval_required": len(violations) > 0,
+        "reasoning_trace": reasoning_trace,
+        "last_updated": datetime.utcnow()
+    }
+
+
+def output_synthesis_node(state: AgentState) -> Dict[str, Any]:
+    """Synthesize final output."""
+    reasoning_trace = state.get("reasoning_trace", [])
+    task = state.get("task", "")
+    
+    # Compile final output from reasoning trace
+    final_output = f"Task: {task}\n\nReasoning completed through {len(reasoning_trace)} phases."
+    
+    reasoning_trace.append({
+        "phase": "output_synthesis",
+        "timestamp": datetime.utcnow().isoformat()
+    })
+    
+    return {
+        "final_output": final_output,
+        "current_phase": Phase.OUTPUT,
+        "reasoning_trace": reasoning_trace,
+        "last_updated": datetime.utcnow()
+    }
+
+
+def self_improvement_node(state: AgentState) -> Dict[str, Any]:
+    """Generate self-improvement proposals."""
+    reasoning_trace = state.get("reasoning_trace", [])
+    
+    proposed_updates = [
+        {
+            "proposal_id": str(uuid.uuid4()),
+            "type": "reasoning_refinement",
+            "description": "Improve reasoning depth",
+            "status": "pending"
+        }
+    ]
+    
+    reasoning_trace.append({
+        "phase": "self_improvement",
+        "proposals": len(proposed_updates),
+        "timestamp": datetime.utcnow().isoformat()
+    })
+    
+    return {
+        "proposed_updates": proposed_updates,
+        "current_phase": Phase.SELF_IMPROVEMENT,
+        "reasoning_trace": reasoning_trace,
+        "last_updated": datetime.utcnow()
+    }
+
+
 def create_ultimate_agent_graph(checkpointer: Optional[SqliteSaver] = None) -> StateGraph:
     """
     Factory that builds and compiles the complete agent graph with all mandated components.
@@ -39,11 +340,6 @@ def create_ultimate_agent_graph(checkpointer: Optional[SqliteSaver] = None) -> S
     workflow = StateGraph(AgentState)
 
     # === NODE DEFINITIONS ===
-    # (all your node functions remain unchanged: load_user_calibration, deconstruction_node,
-    # synthesis_node, refinement passes, futures_node, symbiosis_node, tool_orchestration_node,
-    # guardrails_node, output_synthesis_node, self_improvement_node)
-
-    # === BUILD THE GRAPH ===
     workflow.add_node("load_calibration", load_user_calibration)
     workflow.add_node("deconstruction", deconstruction_node)
     workflow.add_node("synthesis", synthesis_node)
@@ -160,3 +456,4 @@ def run_ultimate_agent(
         "thread_id": config["configurable"]["thread_id"],
         "cost_usd": final_state.get("cost_accumulated_usd", 0.0)
     }
+
