@@ -13,56 +13,58 @@ from pathlib import Path
 class Settings(BaseSettings):
     # LLM Configuration
     llm_provider: Literal["openai", "anthropic", "groq", "xai", "local"] = Field(
-        default="openai", env="LLM_PROVIDER"
+        default="openai", validation_alias="LLM_PROVIDER"
     )
-    llm_model: str = Field(default="gpt-4o", env="LLM_MODEL")
-    llm_temperature: float = Field(default=0.2, env="LLM_TEMPERATURE", ge=0.0, le=1.0)
-    llm_max_tokens: int = Field(default=8192, env="LLM_MAX_TOKENS")
-    openai_api_key: Optional[str] = Field(default=None, env="OPENAI_API_KEY")
-    openai_base_url: Optional[str] = Field(default=None, env="OPENAI_BASE_URL")
+    llm_model: str = Field(default="gpt-4o", validation_alias="LLM_MODEL")
+    llm_temperature: float = Field(default=0.2, validation_alias="LLM_TEMPERATURE", ge=0.0, le=1.0)
+    llm_max_tokens: int = Field(default=8192, validation_alias="LLM_MAX_TOKENS")
+    openai_api_key: Optional[str] = Field(default=None, validation_alias="OPENAI_API_KEY")
+    openai_base_url: Optional[str] = Field(default=None, validation_alias="OPENAI_BASE_URL")
+    grok_api_key: Optional[str] = Field(default=None, validation_alias="GROK_API_KEY")
 
     # Embeddings
     embedding_provider: Literal["openai", "huggingface", "local"] = Field(
-        default="openai", env="EMBEDDING_PROVIDER"
+        default="openai", validation_alias="EMBEDDING_PROVIDER"
     )
-    embedding_model: str = Field(default="text-embedding-3-large", env="EMBEDDING_MODEL")
+    embedding_model: str = Field(default="text-embedding-3-large", validation_alias="EMBEDDING_MODEL")
+    chroma_openai_api_key: Optional[str] = Field(default=None, validation_alias="CHROMA_OPENAI_API_KEY")
 
     # Memory Paths
-    vector_db_path: Path = Field(default=Path("./data/chroma"), env="VECTOR_DB_PATH")
-    structured_db_path: Path = Field(default=Path("./data/agent_memory.sqlite"), env="STRUCTURED_DB_PATH")
-    episodic_log_path: Path = Field(default=Path("./data/episodic_logs"), env="EPISODIC_LOG_PATH")
-    checkpoint_db_path: Path = Field(default=Path("./data/checkpoints.sqlite"), env="CHECKPOINT_DB_PATH")
+    vector_db_path: Path = Field(default=Path("./data/chroma"), validation_alias="VECTOR_DB_PATH")
+    structured_db_path: Path = Field(default=Path("./data/agent_memory.sqlite"), validation_alias="STRUCTURED_DB_PATH")
+    episodic_log_path: Path = Field(default=Path("./data/episodic_logs"), validation_alias="EPISODIC_LOG_PATH")
+    checkpoint_db_path: Path = Field(default=Path("./data/checkpoints.sqlite"), validation_alias="CHECKPOINT_DB_PATH")
 
     # User & Calibration
-    user_id: str = Field(default="tahir_senyurt", env="USER_ID")
-    user_name: str = Field(default="Tahir ŞENYURT", env="USER_NAME")
+    user_id: str = Field(default="tahir_senyurt", validation_alias="USER_ID")
+    user_name: str = Field(default="Tahir ŞENYURT", validation_alias="USER_NAME")
     calibration_seed_path: Path = Field(
-        default=Path("./config/user_calibration_seed.json"), env="CALIBRATION_SEED_PATH"
+        default=Path("./config/user_calibration_seed.json"), validation_alias="CALIBRATION_SEED_PATH"
     )
 
     # Governance & Protocol
-    human_approval_required: bool = Field(default=True, env="HUMAN_APPROVAL_REQUIRED")
-    max_refinement_passes: int = Field(default=4, env="MAX_REFINEMENT_PASSES", ge=1, le=10)
-    max_tool_cost_usd: float = Field(default=5.0, env="MAX_TOOL_COST_USD")
-    enable_self_improvement: bool = Field(default=True, env="ENABLE_SELF_IMPROVEMENT")
-    log_level: str = Field(default="INFO", env="LOG_LEVEL")
+    human_approval_required: bool = Field(default=True, validation_alias="HUMAN_APPROVAL_REQUIRED")
+    max_refinement_passes: int = Field(default=4, validation_alias="MAX_REFINEMENT_PASSES", ge=1, le=10)
+    max_tool_cost_usd: float = Field(default=5.0, validation_alias="MAX_TOOL_COST_USD")
+    enable_self_improvement: bool = Field(default=True, validation_alias="ENABLE_SELF_IMPROVEMENT")
+    log_level: str = Field(default="INFO", validation_alias="LOG_LEVEL")
 
     # Observability
-    langsmith_tracing: bool = Field(default=False, env="LANGSMITH_TRACING")
-    langsmith_api_key: Optional[str] = Field(default=None, env="LANGSMITH_API_KEY")
-    langsmith_project: str = Field(default="ultimate-ai-agent", env="LANGSMITH_PROJECT")
+    langsmith_tracing: bool = Field(default=False, validation_alias="LANGSMITH_TRACING")
+    langsmith_api_key: Optional[str] = Field(default=None, validation_alias="LANGSMITH_API_KEY")
+    langsmith_project: str = Field(default="ultimate-ai-agent", validation_alias="LANGSMITH_PROJECT")
 
     # Deployment
     environment: Literal["development", "staging", "production"] = Field(
-        default="development", env="ENVIRONMENT"
+        default="development", validation_alias="ENVIRONMENT"
     )
-    api_host: str = Field(default="0.0.0.0", env="API_HOST")
-    api_port: int = Field(default=8000, env="API_PORT")
-    cors_origins: List[str] = Field(default=["http://localhost:3000"], env="CORS_ORIGINS")
+    api_host: str = Field(default="0.0.0.0", validation_alias="API_HOST")
+    api_port: int = Field(default=8000, validation_alias="API_PORT")
+    cors_origins: List[str] = Field(default=["http://localhost:3000"], validation_alias="CORS_ORIGINS")
 
     # Cultural / Domain
-    default_cultural_context: str = Field(default="oman_gcc", env="DEFAULT_CULTURAL_CONTEXT")
-    sharia_review_enabled: bool = Field(default=True, env="SHARIA_REVIEW_ENABLED")
+    default_cultural_context: str = Field(default="oman_gcc", validation_alias="DEFAULT_CULTURAL_CONTEXT")
+    sharia_review_enabled: bool = Field(default=True, validation_alias="SHARIA_REVIEW_ENABLED")
 
     # Tool Governance (parsed from JSON string or env)
     allowed_tools: List[str] = Field(
@@ -72,15 +74,16 @@ class Settings(BaseSettings):
             "decision_graph_modeler", "sharia_ethics_reviewer",
             "code_generator", "web_search_governed"
         ],
-        env="ALLOWED_TOOLS"
+        validation_alias="ALLOWED_TOOLS"
     )
     denied_tools: List[str] = Field(
         default=["unrestricted_shell", "arbitrary_code_exec"],
-        env="DENIED_TOOLS"
+        validation_alias="DENIED_TOOLS"
     )
 
     model_config = {
-        "extra": "ignore"
+        "extra": "ignore",
+        "populate_by_name": True,
     }
 
     @field_validator("allowed_tools", "denied_tools", mode="before")
